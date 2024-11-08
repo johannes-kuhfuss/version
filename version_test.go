@@ -6,6 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const (
+	expectedMsg = "expected version string as \"major.minor\" or \"major.minor.patch\""
+)
+
 func TestParseTwoZeroLengthReturnsError(t *testing.T) {
 	var (
 		ver Version
@@ -13,7 +17,7 @@ func TestParseTwoZeroLengthReturnsError(t *testing.T) {
 	parts := []string{}
 	err := ver.parseTwo(parts)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, "expected version string as \"major.minor\" or \"major.minor.patch\"", err.Error())
+	assert.EqualValues(t, expectedMsg, err.Error())
 	assert.EqualValues(t, 0, ver.major)
 	assert.EqualValues(t, 0, ver.minor)
 	assert.EqualValues(t, 0, ver.patch)
@@ -26,7 +30,7 @@ func TestParseTwoWrongLength1ReturnsError(t *testing.T) {
 	parts := []string{"1"}
 	err := ver.parseTwo(parts)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, "expected version string as \"major.minor\" or \"major.minor.patch\"", err.Error())
+	assert.EqualValues(t, expectedMsg, err.Error())
 	assert.EqualValues(t, 0, ver.major)
 	assert.EqualValues(t, 0, ver.minor)
 	assert.EqualValues(t, 0, ver.patch)
@@ -39,7 +43,7 @@ func TestParseTwoWrongLength4ReturnsError(t *testing.T) {
 	parts := []string{"1", "2", "3", "4"}
 	err := ver.parseTwo(parts)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, "expected version string as \"major.minor\" or \"major.minor.patch\"", err.Error())
+	assert.EqualValues(t, expectedMsg, err.Error())
 	assert.EqualValues(t, 0, ver.major)
 	assert.EqualValues(t, 0, ver.minor)
 	assert.EqualValues(t, 0, ver.patch)
@@ -165,7 +169,7 @@ func TestParseNoversionStringReturnsError(t *testing.T) {
 	)
 	err := ver.Parse("no version string")
 	assert.NotNil(t, err)
-	assert.EqualValues(t, "expected version string as \"major.minor\" or \"major.minor.patch\"", err.Error())
+	assert.EqualValues(t, expectedMsg, err.Error())
 	assert.EqualValues(t, 0, ver.major)
 	assert.EqualValues(t, 0, ver.minor)
 	assert.EqualValues(t, 0, ver.patch)
